@@ -10,7 +10,7 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::with('author')->get();
-        return response()->json($books);
+        return view('books', compact('books'));
     }
 
     public function store(Request $request)
@@ -23,13 +23,13 @@ class BookController extends Controller
 
         $book = Book::create($validated);
 
-        return response()->json($book, 201);
+        return redirect()->back();
     }
 
     public function show($id)
     {
         $book = Book::with('author')->findOrFail($id);
-        return response()->json($book);
+        return view('book-show', compact('book'));
     }
 
     public function update(Request $request, $id)
@@ -44,7 +44,7 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return response()->json($book);
+        return redirect()->back();
     }
 
     public function destroy($id)
@@ -52,6 +52,6 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $book->delete();
 
-        return response()->json(['message' => 'Book deleted']);
+        return redirect()->back();
     }
 }
